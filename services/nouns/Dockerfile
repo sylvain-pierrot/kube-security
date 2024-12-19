@@ -13,10 +13,12 @@ RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 RUN pnpm run build
 
 FROM base
-COPY --from=prod-deps /app/node_modules /app/node_modules
-COPY --from=build /app/dist /app/dist
+COPY --chown=node:node --from=prod-deps /app/node_modules /app/node_modules
+COPY --chown=node:node --from=build /app/dist /app/dist
+
+USER node
 
 ENV PORT=5000
 EXPOSE $PORT
 
-CMD [ "pnpm", "start" ]
+CMD [ "node", "dist/index.js" ]
