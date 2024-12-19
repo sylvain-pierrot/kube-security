@@ -1,0 +1,51 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: verbs
+  labels: {{- include "common.labels" . | nindent 4 }}
+    app.kubernetes.io/component: verbs
+spec:
+  replicas: {{ .Values.verbs.replicaCount }}
+  selector:
+    matchLabels: {{- include "common.labels" . | nindent 6 }}
+      app.kubernetes.io/component: verbs
+  template:
+    metadata:
+      labels: {{- include "common.labels" . | nindent 8 }}
+        app.kubernetes.io/component: verbs
+    spec:
+      containers:
+      - name: verbs
+        image: {{ include "common.image" ( dict "image" .Values.verbs.image ) }}
+        imagePullPolicy: {{ .Values.verbs.image.pullPolicy }}
+        {{- if .Values.verbs.env }}
+        env:
+        {{- range $key, $value := .Values.verbs.env }}
+        - name: {{ $key }}
+          value: {{ $value | quote }}
+        {{- end }}
+        {{- end }}
+        {{- if .Values.verbs.resources }}
+        resources: {{- toYaml .Values.verbs.resources | nindent 10 }}
+        {{- else }}
+        resources: {{- template "common.resources.preset" . | nindent 10 }}
+        {{- end }}
+        ports:
+        - name: http
+          containerPort: {{ .Values.verbs.containerPort }}
+        {{- if .Values.verbs.livenessProbe.enabled }}
+        livenessProbe: {{- include "common.probes" (dict "probe" (omit .Values.verbs.livenessProbe "enabled")) | nindent 10 }}
+          httpGet: 
+            path: /healthz
+            port: http
+            scheme: HTTP
+        {{- end }}
+        {{- if .Values.verbs.readinessProbe.enabled }}
+        readinessProbe: {{- include "common.probes" (dict "probe" (omit .Values.verbs.readinessProbe "enabled")) | nindent 10 }}
+          httpGet: 
+            path: /healthz
+            port: http
+            scheme: HTTP
+        {{- end }}
+...

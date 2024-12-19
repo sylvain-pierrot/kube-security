@@ -1,0 +1,24 @@
+{{- if .Values.nouns.autoscaling.enabled -}}
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: nouns
+  labels: {{- include "common.labels" . | nindent 4 }}
+    app.kubernetes.io/component: nouns
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: nouns
+  minReplicas: {{ .Values.nouns.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.nouns.autoscaling.maxReplicas }}
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: {{ .Values.nouns.autoscaling.averageUtilization }}
+...
+{{- end -}}

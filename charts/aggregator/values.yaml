@@ -1,0 +1,221 @@
+aggregator:
+  ## @param aggregator.image.registry aggregator image registry
+  ## @param aggregator.image.repository aggregator image repository
+  ## @param aggregator.image.tag aggregator image tag (immutable tags are recommended)
+  ## @param aggregator.image.pullPolicy aggregator image pull policy
+  ##
+  image:
+    registry: us-docker.pkg.dev
+    repository: google-samples/containers/gke/hello-app
+    tag: "2.0"
+    pullPolicy: Always
+  ## @param aggregator.replicaCount Number of aggregator replicas to deploy
+  ##
+  replicaCount: 1
+  ## @param aggregator.containerPort aggregator custom container port
+  ##
+  containerPort: 5000
+  ## @param aggregator.resources.limits The resources limits for containers
+  ## @param aggregator.resources.requests The requested resources for containers
+  ##
+  resources:
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+    requests:
+      memory: "512Mi"
+      cpu: "500m"
+  ## Autoscaling configuration
+  ## @param aggregator.autoscaling.enabled Enable autoscaling for pods
+  ## @param aggregator.autoscaling.minReplicas Minimum number of aggregator replicas
+  ## @param aggregator.autoscaling.maxReplicas Maximum number of aggregator replicas
+  ## @param aggregator.autoscaling.targetCPU Target CPU utilization percentage
+  ## @param aggregator.autoscaling.targetMemory Target Memory utilization percentage
+  ##
+  autoscaling:
+    enabled: true
+    minReplicas: "1"
+    maxReplicas: "5"
+    averageUtilization: "80"
+  ## @param aggregator.env Environment variables
+  env: {}
+
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/#configure-probes
+  ## @param aggregator.livenessProbe.enabled Enable livenessProbe on %%MAIN_CONTAINER_NAME%% containers
+  ## @param aggregator.livenessProbe.initialDelaySeconds Initial delay seconds for livenessProbe
+  ## @param aggregator.livenessProbe.periodSeconds Period seconds for livenessProbe
+  ## @param aggregator.livenessProbe.timeoutSeconds Timeout seconds for livenessProbe
+  ## @param aggregator.livenessProbe.failureThreshold Failure threshold for livenessProbe
+  ## @param aggregator.livenessProbe.successThreshold Success threshold for livenessProbe
+  ##
+  livenessProbe:
+    enabled: true
+    initialDelaySeconds: 15
+    periodSeconds: 10
+    timeoutSeconds: 3
+    failureThreshold: 3
+    successThreshold: 1
+
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/#configure-probes
+  ## @param aggregator.readinessProbe.enabled Enable readinessProbe on %%MAIN_CONTAINER_NAME%% containers
+  ## @param aggregator.readinessProbe.initialDelaySeconds Initial delay seconds for readinessProbe
+  ## @param aggregator.readinessProbe.periodSeconds Period seconds for readinessProbe
+  ## @param aggregator.readinessProbe.timeoutSeconds Timeout seconds for readinessProbe
+  ## @param aggregator.readinessProbe.failureThreshold Failure threshold for readinessProbe
+  ## @param aggregator.readinessProbe.successThreshold Success threshold for readinessProbe
+  ##
+  readinessProbe:
+    enabled: true
+    initialDelaySeconds: 15
+    periodSeconds: 10
+    timeoutSeconds: 3
+    failureThreshold: 3
+    successThreshold: 1
+
+nouns:
+  ## @param nouns.image.registry nouns image registry
+  ## @param nouns.image.repository nouns image repository
+  ## @param nouns.image.tag nouns image tag (immutable tags are recommended)
+  ## @param nouns.image.pullPolicy nouns image pull policy
+  ##
+  image:
+    registry: us-docker.pkg.dev
+    repository: google-samples/containers/gke/hello-app
+    tag: "2.0"
+    pullPolicy: Always
+  ## @param nouns.replicaCount Number of nouns replicas to deploy
+  ##
+  replicaCount: 1
+  ## @param nouns.containerPort nouns custom container port
+  ##
+  containerPort: 5000
+  ## @param nouns.resources.limits The resources limits for containers
+  ## @param nouns.resources.requests The requested resources for containers
+  ##
+  resources:
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+    requests:
+      memory: "512Mi"
+      cpu: "500m"
+  ## Autoscaling configuration
+  ## @param nouns.autoscaling.enabled Enable autoscaling for pods
+  ## @param nouns.autoscaling.minReplicas Minimum number of nouns replicas
+  ## @param nouns.autoscaling.maxReplicas Maximum number of nouns replicas
+  ## @param nouns.autoscaling.targetCPU Target CPU utilization percentage
+  ## @param nouns.autoscaling.targetMemory Target Memory utilization percentage
+  ##
+  autoscaling:
+    enabled: true
+    minReplicas: "1"
+    maxReplicas: "5"
+    averageUtilization: "80"
+  ## @param nouns.env Environment variables
+  env: {}
+
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/#configure-probes
+  ## @param nouns.livenessProbe.enabled Enable livenessProbe on %%MAIN_CONTAINER_NAME%% containers
+  ## @param nouns.livenessProbe.initialDelaySeconds Initial delay seconds for livenessProbe
+  ## @param nouns.livenessProbe.periodSeconds Period seconds for livenessProbe
+  ## @param nouns.livenessProbe.timeoutSeconds Timeout seconds for livenessProbe
+  ## @param nouns.livenessProbe.failureThreshold Failure threshold for livenessProbe
+  ## @param nouns.livenessProbe.successThreshold Success threshold for livenessProbe
+  ##
+  livenessProbe:
+    enabled: true
+    initialDelaySeconds: 15
+    periodSeconds: 10
+    timeoutSeconds: 3
+    failureThreshold: 3
+    successThreshold: 1
+
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/#configure-probes
+  ## @param nouns.readinessProbe.enabled Enable readinessProbe on %%MAIN_CONTAINER_NAME%% containers
+  ## @param nouns.readinessProbe.initialDelaySeconds Initial delay seconds for readinessProbe
+  ## @param nouns.readinessProbe.periodSeconds Period seconds for readinessProbe
+  ## @param nouns.readinessProbe.timeoutSeconds Timeout seconds for readinessProbe
+  ## @param nouns.readinessProbe.failureThreshold Failure threshold for readinessProbe
+  ## @param nouns.readinessProbe.successThreshold Success threshold for readinessProbe
+  ##
+  readinessProbe:
+    enabled: true
+    initialDelaySeconds: 15
+    periodSeconds: 10
+    timeoutSeconds: 3
+    failureThreshold: 3
+    successThreshold: 1
+
+verbs:
+  ## @param verbs.image.registry verbs image registry
+  ## @param verbs.image.repository verbs image repository
+  ## @param verbs.image.tag verbs image tag (immutable tags are recommended)
+  ## @param verbs.image.pullPolicy verbs image pull policy
+  ##
+  image:
+    registry: us-docker.pkg.dev
+    repository: google-samples/containers/gke/hello-app
+    tag: "2.0"
+    pullPolicy: Always
+  ## @param verbs.replicaCount Number of verbs replicas to deploy
+  ##
+  replicaCount: 1
+  ## @param verbs.containerPort verbs custom container port
+  ##
+  containerPort: 5000
+  ## @param verbs.resources.limits The resources limits for containers
+  ## @param verbs.resources.requests The requested resources for containers
+  ##
+  resources:
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+    requests:
+      memory: "512Mi"
+      cpu: "500m"
+  ## Autoscaling configuration
+  ## @param verbs.autoscaling.enabled Enable autoscaling for pods
+  ## @param verbs.autoscaling.minReplicas Minimum number of verbs replicas
+  ## @param verbs.autoscaling.maxReplicas Maximum number of verbs replicas
+  ## @param verbs.autoscaling.targetCPU Target CPU utilization percentage
+  ## @param verbs.autoscaling.targetMemory Target Memory utilization percentage
+  ##
+  autoscaling:
+    enabled: true
+    minReplicas: "1"
+    maxReplicas: "5"
+    averageUtilization: "80"
+  ## @param verbs.env Environment variables
+  env: {}
+
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/#configure-probes
+  ## @param verbs.livenessProbe.enabled Enable livenessProbe on %%MAIN_CONTAINER_NAME%% containers
+  ## @param verbs.livenessProbe.initialDelaySeconds Initial delay seconds for livenessProbe
+  ## @param verbs.livenessProbe.periodSeconds Period seconds for livenessProbe
+  ## @param verbs.livenessProbe.timeoutSeconds Timeout seconds for livenessProbe
+  ## @param verbs.livenessProbe.failureThreshold Failure threshold for livenessProbe
+  ## @param verbs.livenessProbe.successThreshold Success threshold for livenessProbe
+  ##
+  livenessProbe:
+    enabled: true
+    initialDelaySeconds: 15
+    periodSeconds: 10
+    timeoutSeconds: 3
+    failureThreshold: 3
+    successThreshold: 1
+
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/#configure-probes
+  ## @param verbs.readinessProbe.enabled Enable readinessProbe on %%MAIN_CONTAINER_NAME%% containers
+  ## @param verbs.readinessProbe.initialDelaySeconds Initial delay seconds for readinessProbe
+  ## @param verbs.readinessProbe.periodSeconds Period seconds for readinessProbe
+  ## @param verbs.readinessProbe.timeoutSeconds Timeout seconds for readinessProbe
+  ## @param verbs.readinessProbe.failureThreshold Failure threshold for readinessProbe
+  ## @param verbs.readinessProbe.successThreshold Success threshold for readinessProbe
+  ##
+  readinessProbe:
+    enabled: true
+    initialDelaySeconds: 15
+    periodSeconds: 10
+    timeoutSeconds: 3
+    failureThreshold: 3
+    successThreshold: 1

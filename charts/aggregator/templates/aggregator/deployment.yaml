@@ -1,0 +1,51 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aggregator
+  labels: {{- include "common.labels" . | nindent 4 }}
+    app.kubernetes.io/component: aggregator
+spec:
+  replicas: {{ .Values.aggregator.replicaCount }}
+  selector:
+    matchLabels: {{- include "common.labels" . | nindent 6 }}
+      app.kubernetes.io/component: aggregator
+  template:
+    metadata:
+      labels: {{- include "common.labels" . | nindent 8 }}
+        app.kubernetes.io/component: aggregator
+    spec:
+      containers:
+      - name: aggregator
+        image: {{ include "common.image" ( dict "image" .Values.aggregator.image ) }}
+        imagePullPolicy: {{ .Values.aggregator.image.pullPolicy }}
+        {{- if .Values.aggregator.env }}
+        env:
+        {{- range $key, $value := .Values.aggregator.env }}
+        - name: {{ $key }}
+          value: {{ $value | quote }}
+        {{- end }}
+        {{- end }}
+        {{- if .Values.aggregator.resources }}
+        resources: {{- toYaml .Values.aggregator.resources | nindent 10 }}
+        {{- else }}
+        resources: {{- template "common.resources.preset" . | nindent 10 }}
+        {{- end }}
+        ports:
+        - name: http
+          containerPort: {{ .Values.aggregator.containerPort }}
+        {{- if .Values.aggregator.livenessProbe.enabled }}
+        livenessProbe: {{- include "common.probes" (dict "probe" (omit .Values.aggregator.livenessProbe "enabled")) | nindent 10 }}
+          httpGet: 
+            path: /healthz
+            port: http
+            scheme: HTTP
+        {{- end }}
+        {{- if .Values.aggregator.readinessProbe.enabled }}
+        readinessProbe: {{- include "common.probes" (dict "probe" (omit .Values.aggregator.readinessProbe "enabled")) | nindent 10 }}
+          httpGet: 
+            path: /healthz
+            port: http
+            scheme: HTTP
+        {{- end }}
+...
