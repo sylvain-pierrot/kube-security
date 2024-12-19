@@ -15,10 +15,16 @@ spec:
       labels: {{- include "common.labels" . | nindent 8 }}
         app.kubernetes.io/component: aggregator
     spec:
+      {{- if .Values.aggregator.podSecurityContext.enabled }}
+      securityContext: {{- omit .Values.aggregator.podSecurityContext "enabled" | toYaml | nindent 8 }}
+      {{- end }}
       containers:
       - name: aggregator
         image: {{ include "common.image" ( dict "image" .Values.aggregator.image ) }}
         imagePullPolicy: {{ .Values.aggregator.image.pullPolicy }}
+        {{- if .Values.aggregator.containerSecurityContext.enabled }}
+        securityContext: {{- omit .Values.aggregator.containerSecurityContext "enabled" | toYaml | nindent 10 }}
+        {{- end }}
         {{- if .Values.aggregator.env }}
         env:
         {{- range $key, $value := .Values.aggregator.env }}

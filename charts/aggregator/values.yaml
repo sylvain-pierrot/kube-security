@@ -5,9 +5,9 @@ aggregator:
   ## @param aggregator.image.pullPolicy aggregator image pull policy
   ##
   image:
-    registry: us-docker.pkg.dev
-    repository: google-samples/containers/gke/hello-app
-    tag: "2.0"
+    registry: ghcr.io
+    repository: sylvain-pierrot/kube-security/aggregator
+    tag: latest
     pullPolicy: Always
   ## @param aggregator.replicaCount Number of aggregator replicas to deploy
   ##
@@ -38,7 +38,9 @@ aggregator:
     maxReplicas: "5"
     averageUtilization: "80"
   ## @param aggregator.env Environment variables
-  env: {}
+  env:
+    SERVICE_VERBS_URL: http://verbs.default.svc.cluster.local
+    SERVICE_NOUNS_URL: http://nouns.default.svc.cluster.local
 
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/#configure-probes
   ## @param aggregator.livenessProbe.enabled Enable livenessProbe on %%MAIN_CONTAINER_NAME%% containers
@@ -72,6 +74,32 @@ aggregator:
     failureThreshold: 3
     successThreshold: 1
 
+  ## Configure Pods Security Context
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
+  ## @param aggregator.podSecurityContext.enabled Enable aggregator pods' Security Context
+  ## @param aggregator.podSecurityContext.runAsNonRoot Set runAsNonRoot in aggregator pods' Security Context
+  ##
+  podSecurityContext:
+    enabled: true
+    runAsNonRoot: true
+
+  ## Configure Container Security Context
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
+  ## @param aggregator.containerSecurityContext.enabled Enabled aggregator container' Security Context
+  ## @param aggregator.containerSecurityContext.runAsNonRoot Set runAsNonRoot in aggregator container' Security Context
+  ## @param aggregator.containerSecurityContext.runAsUser Set runAsUser in aggregator container' Security Context
+  ## @param aggregator.containerSecurityContext.readOnlyRootFilesystem Set readOnlyRootFilesystem in aggregator container' Security Context
+  ## @param aggregator.containerSecurityContext.privileged Set privileged in aggregator container' Security Context
+  ## @param aggregator.containerSecurityContext.allowPrivilegeEscalation Set allowPrivilegeEscalation in aggregator container' Security Context
+  ##
+  containerSecurityContext:
+    enabled: true
+    runAsNonRoot: true
+    runAsUser: 1000
+    readOnlyRootFilesystem: true
+    privileged: false
+    allowPrivilegeEscalation: false
+
 nouns:
   ## @param nouns.image.registry nouns image registry
   ## @param nouns.image.repository nouns image repository
@@ -79,9 +107,9 @@ nouns:
   ## @param nouns.image.pullPolicy nouns image pull policy
   ##
   image:
-    registry: us-docker.pkg.dev
-    repository: google-samples/containers/gke/hello-app
-    tag: "2.0"
+    registry: ghcr.io
+    repository: sylvain-pierrot/kube-security/nouns
+    tag: latest
     pullPolicy: Always
   ## @param nouns.replicaCount Number of nouns replicas to deploy
   ##
@@ -146,6 +174,32 @@ nouns:
     failureThreshold: 3
     successThreshold: 1
 
+  ## Configure Pods Security Context
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
+  ## @param nouns.podSecurityContext.enabled Enable nouns pods' Security Context
+  ## @param nouns.podSecurityContext.runAsNonRoot Set runAsNonRoot in nouns pods' Security Context
+  ##
+  podSecurityContext:
+    enabled: true
+    runAsNonRoot: true
+
+  ## Configure Container Security Context
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
+  ## @param nouns.containerSecurityContext.enabled Enabled nouns container' Security Context
+  ## @param nouns.containerSecurityContext.runAsNonRoot Set runAsNonRoot in nouns container' Security Context
+  ## @param nouns.containerSecurityContext.runAsUser Set runAsUser in nouns container' Security Context
+  ## @param nouns.containerSecurityContext.readOnlyRootFilesystem Set readOnlyRootFilesystem in nouns container' Security Context
+  ## @param nouns.containerSecurityContext.privileged Set privileged in nouns container' Security Context
+  ## @param nouns.containerSecurityContext.allowPrivilegeEscalation Set allowPrivilegeEscalation in nouns container' Security Context
+  ##
+  containerSecurityContext:
+    enabled: true
+    runAsNonRoot: true
+    runAsUser: 1000
+    readOnlyRootFilesystem: false
+    privileged: false
+    allowPrivilegeEscalation: false
+
 verbs:
   ## @param verbs.image.registry verbs image registry
   ## @param verbs.image.repository verbs image repository
@@ -153,9 +207,9 @@ verbs:
   ## @param verbs.image.pullPolicy verbs image pull policy
   ##
   image:
-    registry: us-docker.pkg.dev
-    repository: google-samples/containers/gke/hello-app
-    tag: "2.0"
+    registry: ghcr.io
+    repository: sylvain-pierrot/kube-security/verbs
+    tag: latest
     pullPolicy: Always
   ## @param verbs.replicaCount Number of verbs replicas to deploy
   ##
@@ -219,3 +273,29 @@ verbs:
     timeoutSeconds: 3
     failureThreshold: 3
     successThreshold: 1
+
+  ## Configure Pods Security Context
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
+  ## @param verbs.podSecurityContext.enabled Enable verbs pods' Security Context
+  ## @param verbs.podSecurityContext.runAsNonRoot Set runAsNonRoot in verbs pods' Security Context
+  ##
+  podSecurityContext:
+    enabled: true
+    runAsNonRoot: true
+
+  ## Configure Container Security Context
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
+  ## @param verbs.containerSecurityContext.enabled Enabled verbs container' Security Context
+  ## @param verbs.containerSecurityContext.runAsNonRoot Set runAsNonRoot in verbs container' Security Context
+  ## @param verbs.containerSecurityContext.runAsUser Set runAsUser in verbs container' Security Context
+  ## @param verbs.containerSecurityContext.readOnlyRootFilesystem Set readOnlyRootFilesystem in verbs container' Security Context
+  ## @param verbs.containerSecurityContext.privileged Set privileged in verbs container' Security Context
+  ## @param verbs.containerSecurityContext.allowPrivilegeEscalation Set allowPrivilegeEscalation in verbs container' Security Context
+  ##
+  containerSecurityContext:
+    enabled: true
+    runAsNonRoot: true
+    runAsUser: 1000
+    readOnlyRootFilesystem: false
+    privileged: false
+    allowPrivilegeEscalation: false

@@ -4,7 +4,7 @@ import pkg from "../../package.json";
 const router: Router = express.Router();
 
 router.get("/", (req: Request, res: Response) => {
-  res.json({ version: pkg.version });
+  res.json({ version: pkg.version, name: pkg.name });
 });
 
 router.get("/healthz", (req: Request, res: Response) => {

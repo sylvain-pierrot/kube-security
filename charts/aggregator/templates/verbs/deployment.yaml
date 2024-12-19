@@ -15,10 +15,16 @@ spec:
       labels: {{- include "common.labels" . | nindent 8 }}
         app.kubernetes.io/component: verbs
     spec:
+      {{- if .Values.verbs.podSecurityContext.enabled }}
+      securityContext: {{- omit .Values.verbs.podSecurityContext "enabled" | toYaml | nindent 8 }}
+      {{- end }}
       containers:
       - name: verbs
         image: {{ include "common.image" ( dict "image" .Values.verbs.image ) }}
         imagePullPolicy: {{ .Values.verbs.image.pullPolicy }}
+        {{- if .Values.verbs.containerSecurityContext.enabled }}
+        securityContext: {{- omit .Values.verbs.containerSecurityContext "enabled" | toYaml | nindent 10 }}
+        {{- end }}
         {{- if .Values.verbs.env }}
         env:
         {{- range $key, $value := .Values.verbs.env }}
