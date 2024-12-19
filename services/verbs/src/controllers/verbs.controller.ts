@@ -21,8 +21,8 @@ const verbs = [
 
 class VerbsController {
   getRandom(req: Request, res: Response) {
-    const noun = verbs[Math.floor(Math.random() * verbs.length)];
-    res.json({ noun });
+    const verb = verbs[Math.floor(Math.random() * verbs.length)];
+    res.json({ verb });
   }
 
   getAll(req: Request, res: Response) {
