@@ -55,6 +55,13 @@ releases:
   - name: istiod
     namespace: istio-system
     chart: istio/istiod
+    hooks:
+      - events: ["postsync"]
+        command: "kubectl"
+        args: ["label", "namespace", "default", "istio-injection=enabled"]
+      - events: ["postuninstall"]
+        command: "kubectl"
+        args: ["label", "namespace", "default", "istio-injection-"]
     needs:
       - istio-system/istio-base
 
@@ -68,6 +75,11 @@ releases:
   - name: aggregator
     namespace: default
     chart: ./charts/aggregator
+    set:
+      - name: aggregator.env.SERVICE_VERBS_URL
+        value: http://verbs.default.svc.cluster.local
+      - name: aggregator.env.SERVICE_NOUNS_URL
+        value: http://nouns.default.svc.cluster.local
     needs:
       - kyverno/kyverno
       - istio-system/istio-base
