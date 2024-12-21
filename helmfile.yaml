@@ -49,16 +49,16 @@ releases:
     namespace: kyverno
     chart: kyverno/kyverno
 
-  - name: falco
-    namespace: falco
-    chart: falcosecurity/falco
-    set:
-      - name: tty
-        value: true
-      - name: falcosidekick.enabled
-        value: true
-      - name: falcosidekick.webui.enabled
-        value: true
+  # - name: falco
+  #   namespace: falco
+  #   chart: falcosecurity/falco
+  #   set:
+  #     - name: tty
+  #       value: true
+  #     - name: falcosidekick.enabled
+  #       value: true
+  #     - name: falcosidekick.webui.enabled
+  #       value: true
 
   - name: istio-base
     namespace: istio-system
@@ -77,31 +77,53 @@ releases:
       - events: ["postuninstall"]
         command: "kubectl"
         args: ["label", "namespace", "default", "istio-injection-"]
+      - events: ["postsync"]
+        showlogs: true
+        command: "kubectl"
+        args:
+          [
+            "apply",
+            "-f",
+            "https://raw.githubusercontent.com/istio/istio/release-1.24/samples/addons/kiali.yaml",
+          ]
+      - events: ["postsync"]
+        showlogs: true
+        command: "kubectl"
+        args:
+          [
+            "apply",
+            "-f",
+            "https://raw.githubusercontent.com/istio/istio/release-1.24/samples/addons/prometheus.yaml",
+          ]
+      - events: ["preuninstall"]
+        showlogs: true
+        command: "kubectl"
+        args:
+          [
+            "delete",
+            "-f",
+            "https://raw.githubusercontent.com/istio/istio/release-1.24/samples/addons/kiali.yaml",
+          ]
+      - events: ["preuninstall"]
+        showlogs: true
+        command: "kubectl"
+        args:
+          [
+            "delete",
+            "-f",
+            "https://raw.githubusercontent.com/istio/istio/release-1.24/samples/addons/prometheus.yaml",
+          ]
     needs:
       - istio-system/istio-base
-
-  - name: kiali
-    namespace: kiali-operator
-    chart: kiali/kiali
-    set:
-      - name: cr.create
-        value: true
-      - name: cr.namespace
-        value: istio-system
-      - name: cr.spec.auth.strateg
-        value: anonymous
-    needs:
-      - istio-system/istio-base
-      - istio-system/istiod
 
   - name: aggregator
     namespace: default
     chart: ./charts/aggregator
     set:
       - name: aggregator.env.SERVICE_VERBS_URL
-        value: http://verbs.default.svc.cluster.local
+        value: http://verbs
       - name: aggregator.env.SERVICE_NOUNS_URL
-        value: http://nouns.default.svc.cluster.local
+        value: http://nouns
     needs:
       - kyverno/kyverno
       - istio-system/istio-base

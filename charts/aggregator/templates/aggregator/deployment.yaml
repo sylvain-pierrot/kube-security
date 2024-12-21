@@ -45,13 +45,11 @@ spec:
           httpGet: 
             path: /healthz
             port: http
-            scheme: HTTP
         {{- end }}
         {{- if .Values.aggregator.readinessProbe.enabled }}
         readinessProbe: {{- include "common.probes" (dict "probe" (omit .Values.aggregator.readinessProbe "enabled")) | nindent 10 }}
           httpGet: 
             path: /healthz
             port: http
-            scheme: HTTP
         {{- end }}
 ...

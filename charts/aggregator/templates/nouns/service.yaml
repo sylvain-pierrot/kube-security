@@ -9,7 +9,8 @@ spec:
   selector: {{- include "common.labels" . | nindent 4 }}
     app.kubernetes.io/component: nouns
   ports:
-  - port: 80
+  - name: http
+    port: 80
     protocol: TCP
     targetPort: http
   type: ClusterIP
