@@ -8,6 +8,10 @@ repositories:
     url: "https://istio-release.storage.googleapis.com/charts"
   - name: kyverno
     url: "https://kyverno.github.io/kyverno/"
+  - name: falcosecurity
+    url: "https://falcosecurity.github.io/charts"
+  - name: kiali
+    url: "https://kiali.org/helm-charts"
 
 # Default values to set for args along with dedicated keys that can be set by contributors, cli args take precedence over these.
 # In other words, unset values results in no flags passed to helm.
@@ -45,6 +49,17 @@ releases:
     namespace: kyverno
     chart: kyverno/kyverno
 
+  - name: falco
+    namespace: falco
+    chart: falcosecurity/falco
+    set:
+      - name: tty
+        value: true
+      - name: falcosidekick.enabled
+        value: true
+      - name: falcosidekick.webui.enabled
+        value: true
+
   - name: istio-base
     namespace: istio-system
     chart: istio/base
@@ -65,12 +80,19 @@ releases:
     needs:
       - istio-system/istio-base
 
-  # - name: istio-ingressgateway
-  #   namespace: istio-ingress
-  #   chart: istio/gateway
-  #   needs:
-  #     - istio-system/istio-base
-  #     - istio-system/istiod
+  - name: kiali
+    namespace: kiali-operator
+    chart: kiali/kiali
+    set:
+      - name: cr.create
+        value: true
+      - name: cr.namespace
+        value: istio-system
+      - name: cr.spec.auth.strateg
+        value: anonymous
+    needs:
+      - istio-system/istio-base
+      - istio-system/istiod
 
   - name: aggregator
     namespace: default
@@ -84,4 +106,3 @@ releases:
       - kyverno/kyverno
       - istio-system/istio-base
       - istio-system/istiod
-      # - istio-ingress/istio-ingressgateway
